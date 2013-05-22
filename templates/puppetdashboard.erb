@@ -10,8 +10,8 @@ Listen <%= dashboard_port %>
     Order allow,deny
     allow from all
   </Directory>
-  ErrorLog /var/log/apache/puppet-dashboard_error.log
+  ErrorLog /var/log/apache2/puppet-dashboard_error.log
   LogLevel warn
-  CustomLog /var/log/apache/puppet-dashboard_access.log combined
+  CustomLog /var/log/apache2/puppet-dashboard_access.log combined
   ServerSignature On
 </VirtualHost>

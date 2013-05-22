@@ -3,12 +3,6 @@ class puppet-dashboard ( $db_password ) {
     ensure => 'installed',
   }
 
-  class { 'mysql::server':
-    config_hash => {
-      'root_password' => $db_password
-    }
-  }
-
   file { 'settings.yml':
     mode    => '0640',
     owner   => 'www-data',

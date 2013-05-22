@@ -1,7 +1,7 @@
 Listen <%= dashboard_port %>
 
 <VirtualHost *:<%= dashboard_port %>>
-  ServerName <%= name %>
+  ServerName <%= server_name %>
   DocumentRoot <%= docroot %>
   RailsBaseURI <%= rails_base_uri %>
   <Directory <%= docroot %>>
@@ -10,8 +10,8 @@ Listen <%= dashboard_port %>
     Order allow,deny
     allow from all
   </Directory>
-  ErrorLog /var/log/apache/<%= name %>_error.log
+  ErrorLog /var/log/apache/puppet-dashboard_error.log
   LogLevel warn
-  CustomLog /var/log/apache/<%= name %>_access.log combined
+  CustomLog /var/log/apache/puppet-dashboard_access.log combined
   ServerSignature On
 </VirtualHost>

@@ -1,6 +1,27 @@
-class puppet-dashboard ( $db_password ) {
+class puppet-dashboard ( $dashboard_password ) {
+  include puppet-dashboard::vhost
+
   package { 'puppet-dashboard':
     ensure => 'installed',
+  }
+
+  package { ['rake', 'rdoc', 'rack' ]:
+    ensure   => present,
+    provider => 'gem',
+  }
+
+  mysql::db { 'dashboard':
+    user     => 'dashboard',
+    password => $dashboard_password,
+    charset  => 'utf8',
+  }
+
+  exec { 'db-migrate':
+    command => 'rake RAILS_ENV=production db:migrate',
+    cwd     => '/usr/share/puppet-dashboard',
+    path    => '/usr/bin/:/usr/local/bin/',
+    creates => "/var/lib/mysql/dashboard/nodes.frm",
+    require => [ Package[ 'puppet-dashboard' ], Mysql::Db[ 'dashboard' ], File[ 'database.yml' ] ],
   }
 
   file { 'settings.yml':

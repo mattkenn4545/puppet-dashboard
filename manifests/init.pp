@@ -41,4 +41,19 @@ class puppet-dashboard ( $dashboard_password ) {
     path    => "/etc/puppet-dashboard/database.yml",
     require => Package[ 'puppet-dashboard' ]
   }
+
+  file { 'dashboard-production-log':
+    mode    => '0666',
+    content => '',
+    path    => '/usr/share/puppet-dashboard/log/production.log',
+  }
+
+  ini_setting { 'enable puppet-dashboard-workers':
+    ensure  => present,
+    path    => '/etc/default/puppet-dashboard-workers',
+    section => '',
+    setting => 'START',
+    value   => 'yes',
+    require => Package[ 'puppet-dashboard' ],
+  }
 }

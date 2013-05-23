@@ -10,11 +10,6 @@ class puppet-dashboard ( $dashboard_password ) {
     provider => 'gem',
   }
 
-  package { ['rake', 'rdoc', 'rack' ]:
-    ensure   => present,
-    provider => 'gem',
-  }
-
   mysql::db { 'dashboard':
     user     => 'dashboard',
     password => $dashboard_password,

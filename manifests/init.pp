@@ -2,7 +2,8 @@ class puppet-dashboard ( $dashboard_password ) {
   include puppet-dashboard::vhost
 
   package { 'puppet-dashboard':
-    ensure => 'installed',
+    ensure  => 'installed',
+    require => Apt::Source[ 'puppetlabs' ]
   }
 
   package { ['rake', 'rdoc', 'rack' ]:
@@ -46,6 +47,9 @@ class puppet-dashboard ( $dashboard_password ) {
     mode    => '0666',
     content => '',
     path    => '/usr/share/puppet-dashboard/log/production.log',
+    replace => false,
+    require => Package['puppet-dashboard']
+
   }
 
   ini_setting { 'enable puppet-dashboard-workers':
@@ -56,4 +60,13 @@ class puppet-dashboard ( $dashboard_password ) {
     value   => 'yes',
     require => Package[ 'puppet-dashboard' ],
   }
+
+  service { 'puppet-dashboard-workers':
+    enable      => true,
+    ensure      => 'running',
+    hasrestart  => true,
+    require     => Ini_setting['enable puppet-dashboard-workers'],
+  }
+
+
 }

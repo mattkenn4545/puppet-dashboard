@@ -13,4 +13,10 @@ class puppet-dashboard::vhost {
     path    => "/etc/apache2/sites-available/puppetdashboard",
     require => Package[ 'puppet-dashboard' ]
   }
+
+  exec { 'enable puppetdashboard vhost':
+    command   => 'a2ensite puppetdashboard',
+    creates   => '/etc/apache2/sites-enabled/puppetdashboard',
+    require   => File['dashboard-vhost'],
+  }
 }

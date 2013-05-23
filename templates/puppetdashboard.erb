@@ -1,10 +1,10 @@
 Listen <%= dashboard_port %>
 
-<VirtualHost *:<%= dashboard_port %>>
-  ServerName <%= server_name %>
-  DocumentRoot <%= docroot %>
-  RailsBaseURI <%= rails_base_uri %>
-  <Directory <%= docroot %>>
+<VirtualHost *:<%= @dashboard_port %>>
+  ServerName <%= @server_name %>
+  DocumentRoot <%= @docroot %>
+  RailsBaseURI <%= @rails_base_uri %>
+  <Directory <%= @docroot %>>
     Options None
     AllowOverride AuthConfig
     Order allow,deny

@@ -3,7 +3,11 @@ class puppet-dashboard ( $dashboard_password ) {
 
   package { 'puppet-dashboard':
     ensure  => 'installed',
-    require => Apt::Source[ 'puppetlabs' ]
+  }
+
+  package { ['rake', 'rdoc', 'rack' ]:
+    ensure   => present,
+    provider => 'gem',
   }
 
   package { ['rake', 'rdoc', 'rack' ]:
@@ -48,8 +52,7 @@ class puppet-dashboard ( $dashboard_password ) {
     content => '',
     path    => '/usr/share/puppet-dashboard/log/production.log',
     replace => false,
-    require => Package['puppet-dashboard']
-
+    require => Package['puppet-dashboard'],
   }
 
   ini_setting { 'enable puppet-dashboard-workers':

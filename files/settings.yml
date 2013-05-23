@@ -42,7 +42,7 @@ inventory_port: 8140
 
 # Set this to true to allow Dashboard to display diffs on files that
 # are archived in the file bucket.
-use_file_bucket_diffs: false
+use_file_bucket_diffs: true
 
 # Hostname of the file bucket server.
 file_bucket_server: 'puppet'

@@ -59,12 +59,33 @@ class puppet-dashboard ( $dashboard_password ) {
     require => Package[ 'puppet-dashboard' ],
   }
 
+  mysql::server::config { 'basic_config':
+    settings => {
+      'mysqld' => {
+        'innodb_file_per_table'      => '1',
+        'innodb_buffer_pool_size'    => '512M',
+        'innodb_flush_method'        => 'O_DIRECT',
+        'innodb_data_file_path'      => 'ibdata1:10M:autoextend:max:10G',
+      }
+    }
+  }
+
+  file { '/usr/share/puppet-dashboard/bin/cleanup_db.sh':
+    ensure      => present,
+    mode        => '0750',
+    source      => "puppet:///modules/${module_name}/cleanup_db.sh"
+  }
+
+  cron { 'cleanup_db.sh':
+    command => '/usr/share/puppet-dashboard/bin/cleanup_db.sh > /dev/null',
+    user    => root,
+    weekday => 'Sunday',
+  }
+
   service { 'puppet-dashboard-workers':
     enable      => true,
     ensure      => 'running',
     hasrestart  => true,
     require     => Ini_setting['enable puppet-dashboard-workers'],
   }
-
-
 }

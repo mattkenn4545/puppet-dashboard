@@ -59,6 +59,13 @@ class puppet-dashboard ( $dashboard_password ) {
     require => Package[ 'puppet-dashboard' ],
   }
 
+  service { 'puppet-dashboard-workers':
+    enable      => true,
+    ensure      => 'running',
+    hasrestart  => true,
+    require     => Ini_setting['enable puppet-dashboard-workers'],
+  }
+
   mysql::server::config { 'basic_config':
     settings => {
       'mysqld' => {
@@ -80,12 +87,5 @@ class puppet-dashboard ( $dashboard_password ) {
     command => '/usr/share/puppet-dashboard/bin/cleanup_db.sh > /dev/null',
     user    => root,
     weekday => 'Sunday',
-  }
-
-  service { 'puppet-dashboard-workers':
-    enable      => true,
-    ensure      => 'running',
-    hasrestart  => true,
-    require     => Ini_setting['enable puppet-dashboard-workers'],
   }
 }

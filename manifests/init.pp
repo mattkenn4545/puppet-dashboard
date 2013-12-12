@@ -74,18 +74,22 @@ class puppet-dashboard ( $dashboard_password ) {
         'innodb_flush_method'        => 'O_DIRECT',
         'innodb_data_file_path'      => 'ibdata1:10M:autoextend:max:10G',
       }
-    }
+    },
+    require => Package['puppet-dashboard']
   }
 
   file { '/usr/share/puppet-dashboard/bin/cleanup_db.sh':
     ensure      => present,
     mode        => '0750',
-    source      => "puppet:///modules/${module_name}/cleanup_db.sh"
+    source      => "puppet:///modules/${module_name}/cleanup_db.sh",
+    require     => Package['puppet-dashboard']
   }
 
   cron { 'cleanup_db.sh':
     command => '/usr/share/puppet-dashboard/bin/cleanup_db.sh > /dev/null',
     user    => root,
+    hour    => 8,
+    minute  => 30,
     weekday => 'Sunday',
   }
 }

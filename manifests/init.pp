@@ -1,10 +1,6 @@
 class puppet-dashboard ( $dashboard_password ) {
   include puppet-dashboard::vhost
 
-  package { 'puppet-dashboard':
-    ensure  => 'installed',
-  } ->
-
   ensure_packages(['rubygems'])
 
   package { ['rake', 'rdoc', 'rack' ]:
@@ -12,7 +8,9 @@ class puppet-dashboard ( $dashboard_password ) {
     provider => 'gem',
     require  => Package['rubygems']
   } ->
-
+  package { 'puppet-dashboard':
+    ensure  => 'installed'
+  } ->
   mysql::server::config { 'basic_config':
     settings => {
       'mysqld' => {

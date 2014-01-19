@@ -5,9 +5,12 @@ class puppet-dashboard ( $dashboard_password ) {
     ensure  => 'installed',
   } ->
 
+  ensure_packages(['rubygems'])
+
   package { ['rake', 'rdoc', 'rack' ]:
     ensure   => present,
     provider => 'gem',
+    require  => Package['rubygems']
   } ->
 
   mysql::server::config { 'basic_config':

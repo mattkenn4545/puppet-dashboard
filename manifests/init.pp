@@ -1,12 +1,9 @@
 class puppet-dashboard ( $dashboard_password ) {
   include puppet-dashboard::vhost
 
-  ensure_packages(['rubygems'])
-
   package { ['rake', 'rdoc', 'rack' ]:
     ensure   => present,
-    provider => 'gem',
-    require  => Package['rubygems']
+    provider => 'gem'
   } ->
   package { 'puppet-dashboard':
     ensure  => 'installed'

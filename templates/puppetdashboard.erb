@@ -5,6 +5,11 @@ Listen <%= dashboard_port %>
   DocumentRoot <%= @docroot %>
   RailsBaseURI <%= @rails_base_uri %>
   <Directory <%= @docroot %>>
+    AuthType Basic
+    AuthName "Authentication Required"
+    AuthUserFile "/etc/apache2/.htpasswd"
+    Require valid-user
+
     Options None
     AllowOverride AuthConfig
     Order allow,deny

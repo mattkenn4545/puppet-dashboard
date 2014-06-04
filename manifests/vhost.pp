@@ -1,5 +1,4 @@
 class puppet-dashboard::vhost {
-
   $dashboard_port = 3000
   $docroot = '/usr/share/puppet-dashboard/public'
   $rails_base_uri = '/'
@@ -18,5 +17,11 @@ class puppet-dashboard::vhost {
     command   => 'a2ensite puppetdashboard',
     creates   => '/etc/apache2/sites-enabled/puppetdashboard',
     require   => File['dashboard-vhost'],
+  }
+
+  firewall { '100 allow puppetdashboard':
+    port      => $dashboard_port,
+    proto     => 'tcp',
+    action    => 'accept'
   }
 }

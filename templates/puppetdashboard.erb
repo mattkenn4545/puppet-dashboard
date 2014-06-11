@@ -4,17 +4,21 @@ Listen <%= dashboard_port %>
   ServerName <%= @server_name %>
   DocumentRoot <%= @docroot %>
   RailsBaseURI <%= @rails_base_uri %>
-  <Directory <%= @docroot %>>
+
+  <Directory />
+    <% if @auth %>
     AuthType Basic
     AuthName "Authentication Required"
+    AuthBasicProvider file
     AuthUserFile "/etc/apache2/.htpasswd"
     Require valid-user
-
+    <% end %>
     Options None
     AllowOverride AuthConfig
     Order allow,deny
     allow from all
   </Directory>
+
   ErrorLog /var/log/apache2/puppet-dashboard_error.log
   LogLevel warn
   CustomLog /var/log/apache2/puppet-dashboard_access.log combined

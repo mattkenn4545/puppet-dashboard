@@ -8,16 +8,6 @@ class puppet-dashboard ( $dashboard_password ) {
   package { 'puppet-dashboard':
     ensure  => 'installed'
   } ->
-  mysql::server::config { 'basic_config':
-    settings => {
-      'mysqld' => {
-        'innodb_file_per_table'      => '1',
-        'innodb_buffer_pool_size'    => '512M',
-        'innodb_flush_method'        => 'O_DIRECT',
-        'innodb_data_file_path'      => 'ibdata1:10M:autoextend:max:10G',
-      }
-    }
-  } ->
 
   mysql::db { 'dashboard':
     user     => 'dashboard',
